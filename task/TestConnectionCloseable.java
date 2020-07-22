@@ -24,7 +24,7 @@ public class TestConnectionCloseable {
     private static void queryFromNameLesson(String value) throws SQLException {
         statement = connection.prepareStatement("SELECT *  FROM test.lesson JOIN test.exercise " +
                 "ON lesson.id = exercise.idlesson WHERE lesson.name = ?");
-        statement.setString(1,value);
+        statement.setString(1, value);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
