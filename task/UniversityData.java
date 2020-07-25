@@ -1,6 +1,7 @@
 package task;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Properties;
 
 public class TestConnectionCloseable {
@@ -8,9 +9,7 @@ public class TestConnectionCloseable {
     private static Connection connection;
     private static PreparedStatement statement;
 
-    public static void main(String[] args) throws SQLException {
-        queryFromNameLesson("History");
-    }
+
 
     public TestConnectionCloseable() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/test";
@@ -52,4 +51,16 @@ public class TestConnectionCloseable {
                 "GROUP BY group.curse ORDER BY SUM_quantityhours DESC LIMIT 1 ";
     }
 
+    @Override
+    public void close() throws Exception {
+        connection.close(); // TODO: 25.07.2020 chek info 2 point
+    }
+
+    public List<Exercise> getExercises(String history) {// TODO: 25.07.2020 получаем информацию из бд
+        return  null;
+    }
+
+    public void printExercises(List<Exercise> exercises) {// TODO: 25.07.2020  передаем информацию в консоль
+
+    }
 }
