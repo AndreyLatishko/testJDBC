@@ -1,14 +1,13 @@
 package task;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class UniversityMain {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args)  {
         try(UniversityData universityData = new UniversityData()){
-            List<Exercise> exercises = universityData.getExercises("History");
-            universityData.printExercises(exercises);
+            List<Exercise> exercises = universityData.getInfoNameLesson("History");
+            universityData.printInfoNameLesson(exercises);
         } catch (Exception e) {
             e.printStackTrace();
         }
