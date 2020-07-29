@@ -11,6 +11,6 @@ public class UniversityMain {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        // ебаный коммит
     }
 }
