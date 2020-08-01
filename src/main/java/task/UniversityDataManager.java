@@ -1,5 +1,9 @@
 package task;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +19,14 @@ public class UniversityDataManager implements AutoCloseable {
     ArrayList<Lesson> lessonArrayList = new ArrayList<>();
     ArrayList<Group> groupArrayList = new ArrayList<>();
 
-    public UniversityDataManager() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/test";
-        Properties props = new Properties();
-        props.setProperty("password", "1234");
-        props.setProperty("user", "root");
-        props.setProperty("serverTimezone", "UTC");
-        connection = DriverManager.getConnection(url, props);
+    public UniversityDataManager() throws SQLException, FileNotFoundException {
+        try(InputStream inputStream = new FileInputStream("C:/Projects/testJDBC/src/config.properties")) {
+            Properties props = new Properties();
+            props.setProperty("serverTimezone", "UTC");
+            connection = DriverManager.getConnection(props.getProperty("url"), props);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
