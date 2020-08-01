@@ -21,9 +21,6 @@ public class Exercise {
         this.topic = topic;
     }
 
-    public Exercise() {
-
-    }
 
     public int getId() {
         return id;
