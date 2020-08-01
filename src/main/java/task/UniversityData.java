@@ -129,7 +129,6 @@ public class UniversityData implements AutoCloseable {
         exerciseArrayList.add(exercise);
         return exerciseArrayList;
     }
-    // ебаный коммит
 
     public void printGroupMaxHours(List<Exercise> exercises) {
 
