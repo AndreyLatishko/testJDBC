@@ -20,7 +20,7 @@ public class Exercise {
         this.idlesson = idlesson;
         this.topic = topic;
     }
-    // ебаный коммит
+
     public Exercise() {
 
     }
