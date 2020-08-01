@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class UniversityData implements AutoCloseable {
+public class UniversityDataManager implements AutoCloseable {
 
     private Connection connection;
     ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
 
-    public UniversityData() throws SQLException {
+    public UniversityDataManager() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/test";
         Properties props = new Properties();
         props.setProperty("password", "1234");
@@ -110,7 +110,7 @@ public class UniversityData implements AutoCloseable {
     }
 
     public void printMinHoursLesson(List<Exercise> exercises) {
-
+        // todo
     }
 
     public List<Exercise> getGroupMaxHours() throws SQLException {
@@ -131,6 +131,6 @@ public class UniversityData implements AutoCloseable {
     }
 
     public void printGroupMaxHours(List<Exercise> exercises) {
-
+        // todo
     }
 }
