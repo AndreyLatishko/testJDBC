@@ -1,9 +1,6 @@
 package task;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +16,12 @@ public class UniversityDataManager implements AutoCloseable {
     ArrayList<Lesson> lessonArrayList = new ArrayList<>();
     ArrayList<Group> groupArrayList = new ArrayList<>();
 
-    public UniversityDataManager() throws SQLException, FileNotFoundException {
-        try(InputStream inputStream = new FileInputStream("C:/Projects/testJDBC/src/config.properties")) {
-            Properties props = new Properties();
-            props.setProperty("serverTimezone", "UTC");
-            connection = DriverManager.getConnection(props.getProperty("url"), props);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public UniversityDataManager() throws SQLException {
+        Properties props = new Properties();
+        props.setProperty("password", String.valueOf(UniversityMain.password));
+        props.setProperty("user", UniversityMain.user);
+        props.setProperty("serverTimezone", "UTC");
+        connection = DriverManager.getConnection(UniversityMain.url, props);
     }
 
     @Override
@@ -44,7 +39,7 @@ public class UniversityDataManager implements AutoCloseable {
             String name = resultSet.getString("name");
             int quantityhours = resultSet.getInt("quantityhours");
             String form = resultSet.getString("form");
-            int idE = resultSet.getInt("idE");
+            int idE = resultSet.getInt("id");
             int ifgroup = resultSet.getInt("idgroup");
             int idlesson = resultSet.getInt("idlesson");
             String topic = resultSet.getString("topic");
@@ -89,7 +84,7 @@ public class UniversityDataManager implements AutoCloseable {
         while (resultSet.next()) {
             int idgroup = resultSet.getInt("idgroup");
             int quantityhours = resultSet.getInt("quantityhours");
-            groups = new Group(idgroup,quantityhours);
+            groups = new Group(idgroup, quantityhours);
         }
         groupArrayList.add(groups);
         return groupArrayList;
