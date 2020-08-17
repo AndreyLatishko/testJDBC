@@ -7,6 +7,7 @@ import java.util.Properties;
 
 public class UniversityMain {
     public static void main(String[] args)  {
+
         InfoProperties infoProperties = new InfoProperties();
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("Введите путь к файлу:");
@@ -15,6 +16,7 @@ public class UniversityMain {
                 infoProperties.setUrl(bufferedReader.readLine());
                 infoProperties.setPassword(Integer.parseInt(bufferedReader.readLine()));
                 infoProperties.setUser(bufferedReader.readLine());
+
             } else {
                 InputStream input = new FileInputStream("C://Projects//testJDBC//src//main//resources//config.properties");
                 File file = new File(String.valueOf(input));
