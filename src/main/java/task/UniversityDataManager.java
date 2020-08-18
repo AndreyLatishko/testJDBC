@@ -17,12 +17,12 @@ public class UniversityDataManager implements AutoCloseable {
     ArrayList<Group> groupArrayList = new ArrayList<>();
 
 
-    public UniversityDataManager(String url, int password, String user) throws SQLException {
+    public UniversityDataManager(DbProperties dbProperties) throws SQLException {
         Properties props = new Properties();
-        props.setProperty("password", String.valueOf(password));
-        props.setProperty("user", user);
+        props.setProperty("password", String.valueOf(dbProperties.getPassword()));
+        props.setProperty("user", dbProperties.getUser());
         props.setProperty("serverTimezone", "UTC");
-        connection = DriverManager.getConnection(url, props);
+        connection = DriverManager.getConnection(dbProperties.getUrl(), props);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package task;
 
-public class InfoProperties {
+public class DbProperties {
     private String url, user;
-    private  int password;
+    private int password;
 
     public String getUrl() {
         return url;
