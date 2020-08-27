@@ -1,8 +1,8 @@
 package task;
 
 public class DbProperties {
-    private String url, user;
-    private int password;
+    private String url, user, password;
+
 
     public String getUrl() {
         return url;
@@ -20,11 +20,11 @@ public class DbProperties {
         this.user = user;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }

@@ -2,9 +2,7 @@ package task;
 
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class UniversityDataManager implements AutoCloseable {
 
@@ -19,7 +17,7 @@ public class UniversityDataManager implements AutoCloseable {
 
     public UniversityDataManager(DbProperties dbProperties) throws SQLException {
         Properties props = new Properties();
-        props.setProperty("password", String.valueOf(dbProperties.getPassword()));
+        props.setProperty("password", dbProperties.getPassword());
         props.setProperty("user", dbProperties.getUser());
         props.setProperty("serverTimezone", "UTC");
         connection = DriverManager.getConnection(dbProperties.getUrl(), props);
@@ -40,19 +38,21 @@ public class UniversityDataManager implements AutoCloseable {
             String name = resultSet.getString("name");
             int quantityhours = resultSet.getInt("quantityhours");
             String form = resultSet.getString("form");
-            int idE = resultSet.getInt("id");
-            int ifgroup = resultSet.getInt("idgroup");
+            int idE = resultSet.getInt("exercise.id");
+            int idgroup = resultSet.getInt("idgroup");
             int idlesson = resultSet.getInt("idlesson");
             String topic = resultSet.getString("topic");
-            exercise = new Exercise(id, name, quantityhours, form, idE, ifgroup, idlesson, topic);
+            exercise = new Exercise(id, name, quantityhours, form, idE, idgroup, idlesson, topic);
+            exerciseArrayList.add(exercise);
         }
-        exerciseArrayList.add(exercise);
         return exerciseArrayList;
     }
 
     public void printLessonByName(List<Exercise> exercises) {
-        exercises.addAll(exerciseArrayList);
-        System.out.println(exercises);
+        for (Exercise s : exercises) {
+            System.out.printf("Id = %d, name - %s, quantityhours = %d, form - %s, idE = %d, idgroup = %d, idlesson = %d, topic - %s.%n",
+                    s.getId(), s.getName(), s.getQuantityhours(), s.getForm(), s.getIdE(), s.getIdgroup(), s.getIdlesson(), s.getTopic());
+        }
     }
 
     public List<Lesson> getMinHoursWithLesson(int value) throws SQLException {
@@ -62,37 +62,39 @@ public class UniversityDataManager implements AutoCloseable {
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             String name = resultSet.getString("name");
-            int minquantityhours = resultSet.getInt("quantityhours");
+            int minquantityhours = resultSet.getInt("MIN_quantityhours");
             lessons = new Lesson(name, minquantityhours);
+            lessonArrayList.add(lessons);
         }
-        lessonArrayList.add(lessons);
         return lessonArrayList;
     }
 
     public void printMinHoursWithLesson(List<Lesson> lessons) {
-        lessons.addAll(lessonArrayList);
-        System.out.println(lessons);
+        for (Lesson s : lessons) {
+            System.out.printf("Name - %s, MINquantityhours = %d.%n", s.getName(), s.getMinquantityhours());
+        }
     }
 
     public List<Group> getMaxHoursForGroup() throws SQLException {
-        String query = "SELECT group.curse, SUM(lesson.quantityhours) " +
+        String query = "SELECT course, SUM(lesson.quantityhours) " +
                 "AS SUM_quantityhours FROM test.group JOIN test.exercise ON group.id = exercise.idgroup " +
-                "JOIN test.lesson ON lesson.id = exercise.idlesson GROUP BY group.curse ORDER " +
+                "JOIN test.lesson ON lesson.id = exercise.idlesson GROUP BY group.course ORDER " +
                 "BY SUM_quantityhours DESC LIMIT 1 ";
         Statement statement = connection.createStatement();
         statement.executeQuery(query);
         ResultSet resultSet = statement.executeQuery(query);
         while (resultSet.next()) {
-            int idgroup = resultSet.getInt("idgroup");
-            int quantityhours = resultSet.getInt("quantityhours");
+            String idgroup = resultSet.getString("group.course");
+            int quantityhours = resultSet.getInt("SUM_quantityhours");
             groups = new Group(idgroup, quantityhours);
+            groupArrayList.add(groups);
         }
-        groupArrayList.add(groups);
         return groupArrayList;
     }
 
     public void printMaxHoursForGroup(List<Group> groups) {
-        groups.addAll(groupArrayList);
-        System.out.println(groups);
+        for (Group s : groups) {
+            System.out.printf("Idgroup = %s, quantityhours = %d.%n", s.getIdgroup(), s.getQuantityhours());
+        }
     }
 }
