@@ -5,29 +5,10 @@ import java.util.List;
 import java.util.Properties;
 
 public class UniversityMain {
-    //C:\Projects\testJDBC\src\main\resources\config.properties
-    public static void main(String[] args) throws IOException {
-        Properties properties = new Properties();
-        DbProperties dbProperties = new DbProperties();
-        String fileName = "";
-        if (args.length >= 1) {
-            fileName = args[0];
-            File propertiesFile = new File(fileName);
-            if (propertiesFile.exists()) {
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(propertiesFile))) {
-                    properties.load(bufferedReader);
-                }
-            } else {
-                InputStream input = new FileInputStream("C://Projects//testJDBC//src//main//resources//config3.properties");
-                properties.load(input);
-            }
-        } else {
-            InputStream input = new FileInputStream("C://Projects//testJDBC//src//main//resources//config3.properties");
-            properties.load(input);
-        }
-        dbProperties.setUrl(properties.getProperty("url"));
-        dbProperties.setPassword(properties.getProperty("password"));
-        dbProperties.setUser(properties.getProperty("user"));
+    private static final String DEFAULT_PROPERTIES_PATH = "C://Projects//testJDBC//src//main//resources//config.properties";
+
+    public static void main(String[] args)  {
+        DbProperties dbProperties = loadProperties(args);
 
         try (UniversityDataManager universityDataManager = new UniversityDataManager(dbProperties)) {
             List<Exercise> exercises = universityDataManager.getLessonByName("History");
@@ -42,5 +23,32 @@ public class UniversityMain {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static DbProperties loadProperties(String[] args) {
+        Properties properties = new Properties();
+        String propertiesFilePath;
+        if (args.length > 0) {
+            propertiesFilePath = args[0];
+        } else {
+            System.out.println("Default properties file is used");
+            propertiesFilePath = DEFAULT_PROPERTIES_PATH;
+        }
+        File propertiesFile = new File(propertiesFilePath);
+        if (!propertiesFile.exists()) {
+            throw new IllegalStateException("Properties file is not existing");
+        }
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(propertiesFile))) {
+            properties.load(bufferedReader);
+        }  catch (IOException ex) {
+            ex.printStackTrace();
+            throw new IllegalStateException("Could not read properties file");
+        }
+
+        String url = properties.getProperty("url");
+        String password = properties.getProperty("password");
+        String user = properties.getProperty("user");
+
+        return new DbProperties(url, user, password);
     }
 }
