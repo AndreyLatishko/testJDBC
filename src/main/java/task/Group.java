@@ -1,19 +1,19 @@
 package task;
 
 public class Group {
-    private int idgroup;
+    private String idgroup;
     private int quantityhours;
 
-    public Group(int idgroup, int quantityhours) {
+    public Group(String idgroup, int quantityhours) {
         this.idgroup = idgroup;
         this.quantityhours = quantityhours;
     }
 
-    public int getIdgroup() {
+    public String getIdgroup() {
         return idgroup;
     }
 
-    public void setIdgroup(int idgroup) {
+    public void setIdgroup(String idgroup) {
         this.idgroup = idgroup;
     }
 
