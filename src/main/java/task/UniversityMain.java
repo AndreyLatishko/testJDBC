@@ -6,44 +6,29 @@ import java.util.Properties;
 
 public class UniversityMain {
     //C:\Projects\testJDBC\src\main\resources\config.properties
-    public static void main(String[] args) {
-        String fileName = "";
-        if (args.length > 1) {
-            fileName = args[0];
-        }
+    public static void main(String[] args) throws IOException {
+        Properties properties = new Properties();
         DbProperties dbProperties = new DbProperties();
-        boolean fileNameEmpty = fileName.isEmpty();
-        if (!fileNameEmpty) {
+        String fileName = "";
+        if (args.length >= 1) {
+            fileName = args[0];
             File propertiesFile = new File(fileName);
-            if(propertiesFile.exists()) {
+            if (propertiesFile.exists()) {
                 try (BufferedReader bufferedReader = new BufferedReader(new FileReader(propertiesFile))) {
-                    Properties properties = new Properties();
                     properties.load(bufferedReader);
-                    dbProperties.setUrl(properties.getProperty("url"));
-                    dbProperties.setPassword(properties.getProperty("password"));
-                    dbProperties.setUser(properties.getProperty("user"));
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            } else{
-                System.out.println("Invalid propertiesFile");
+            } else {
+                InputStream input = new FileInputStream("C://Projects//testJDBC//src//main//resources//config3.properties");
+                properties.load(input);
             }
         } else {
-            InputStream input;
-            Properties properties = new Properties();
-            try {
-                input = new FileInputStream("C://Projects//testJDBC//src//main//resources//config.properties");
-                properties.load(input);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                System.out.println("Invalid file path");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            dbProperties.setUrl(properties.getProperty("url"));
-            dbProperties.setPassword(properties.getProperty("password"));
-            dbProperties.setUser(properties.getProperty("user"));
+            InputStream input = new FileInputStream("C://Projects//testJDBC//src//main//resources//config3.properties");
+            properties.load(input);
         }
+        dbProperties.setUrl(properties.getProperty("url"));
+        dbProperties.setPassword(properties.getProperty("password"));
+        dbProperties.setUser(properties.getProperty("user"));
+
         try (UniversityDataManager universityDataManager = new UniversityDataManager(dbProperties)) {
             List<Exercise> exercises = universityDataManager.getLessonByName("History");
             List<Lesson> lessons = universityDataManager.getMinHoursWithLesson(60);
