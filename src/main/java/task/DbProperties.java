@@ -1,30 +1,28 @@
 package task;
 
-public class DbProperties {
-    private String url, user, password;
+import java.util.Objects;
 
+public class DbProperties {
+    private final String url, user, password;
+
+    public DbProperties(String url, String user, String password) {
+        Objects.requireNonNull(url);
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(password);
+        this.url = url;
+        this.user = user;
+        this.password = password;
+    }
 
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getUser() {
         return user;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
